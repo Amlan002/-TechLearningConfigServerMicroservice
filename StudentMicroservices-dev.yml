@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: StudentMicroservices
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/TechLearningMicroservice
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  zipkin:
+    enabled: true
+
+server:
+  port: 8000
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka
+resilience4j:
+  circuitbreaker:
+    configs:
+      shared:
+        register-health-indicator: true
+        sliding-window-type: count-based
+        sliding-window-size: 5
+        failure-rate-threshold: 40
+        slow-call-duration-threshold: 2s
+        slow-call-rate-threshold: 40
+        writable-stack-trace-enabled: true
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 1
+        max-wait-duration-in-half-open-state: 10s
+        wait-duration-in-open-state: 10s
+    instances:
+      example:
+        base-config: shared
+
+message: default message from student-service dev environment
